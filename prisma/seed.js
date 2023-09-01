@@ -1,113 +1,80 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function seed() {
-    const createdCustomer = await prisma.customer.create({
-        data: {
-            name: 'Alice'
+  const createdCharacter = await prisma.character.create({
+    data: {
+      name: "Nyx",
+      player: "Chris",
+      class: "Paladin",
+      level: 2,
+      background: "Folk Hero",
+      race: "Rock Gnome",
+      alignment: "Neutral Good",
+      profBonus: 2,
+      stats: {
+        create: {
+          str: 16,
+          dex: 8,
+          con: 13,
+          int: 9,
+          wis: 11,
+          cha: 14,
+        },
+      },
+      savingThrows: {
+        create: {
+          str: 3,
+          dex: -1,
+          con: 1,
+          int: -1,
+          wis: 2,
+          cha: 4,
+        },
+      },
+      skills: {
+        create: {
+          acrobatics: 0,
+          animHand: -1,
+          arcane: 2,
+          athl: -1,
+          decep: 3,
+          hist: -1,
+          insight: 0,
+          intimid: 2,
+          invest: 1,
+          med: 0,
+          nature: -1,
+          percep: 0,
+          perf: 2,
+          pers: 4,
+          religion: 1,
+          sOfH: -1,
+          stealth: -1,
+          surv: 2,
+        },
+      },
+      combat: {
+        create: {
+            hpMax: 20,
+            ac: 18,
+            speed: 25,
+            hitDice: "2d10"
         }
-    });
+      }
+    },
+  });
 
-    console.log('Customer created', createdCustomer);
+  console.log("Character created", createdCharacter);
 
-    const createdContact = await prisma.contact.create({
-        data: {
-            phone: "+44 123123456",
-            email: "dude@dude.com",
-            customer_id: 1
-        }
-    })
+  // Add your code here
 
-    console.log('Contact created', createdContact)
-
-    const createdCustomerWithContact = await prisma.customer.create({
-        data: {
-            name: "Bob",
-            contact: {
-                create: {
-                    phone: "07777123234",
-                    email: "bob@bob.com"
-                }
-            }
-        }
-    })
-
-    console.log('Customer created with contact', createdCustomerWithContact)
-
-    const createdScreen = await prisma.screen.create({
-        data: {
-            number: 1
-        }
-    })
-
-    const createdMovie = await prisma.movie.create({
-        data: {
-            title: "Your Name",
-            runtimeMins: 107
-        }
-    })
-
-    console.log('Movie created', createdMovie)
-
-    const startTime = new Date("July 6 2023 12:30")
-    const endTime = new Date("July 6 2023, 14:17")
-
-    const createdScreening = await prisma.screening.create({
-        data: {
-            startsAt: startTime,
-            movieId: 1,
-            screenId: 1
-        }
-    })
-
-    const createdMovieWithScreening = await prisma.movie.create({
-        data: {
-            title: "Mirai",
-            runtimeMins: 98,
-            screenings: {
-                create: [
-                    {startsAt: endTime,
-                    screen: {
-                        connect: {
-                            id: 1
-                    }}
-            }]
-            }
-        }
-    })
-
-    const createdTicket = await prisma.ticket.create({
-        data: {
-            customer: {
-                connect: {
-                    id: 1
-                }
-            },
-            screening: {
-                connect: {
-                    id: 1
-                }
-            }
-        }
-    })
-
-    
-
-
-
-
-    // Add your code here
-
-
-
-
-    // Don't edit any of the code below this line
-    process.exit(0);
+  // Don't edit any of the code below this line
+  process.exit(0);
 }
 
-seed()
-    .catch(async (error) => {
-        console.error(error);
-        await prisma.$disconnect();
-        process.exit(1);
-    })
+seed().catch(async (error) => {
+  console.error(error);
+  await prisma.$disconnect();
+  process.exit(1);
+});

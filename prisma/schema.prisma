@@ -11,57 +11,75 @@ datasource db {
 model Character {
   id        Int      @id @default(autoincrement())
   name      String
-  tickets   Ticket[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  contact   Contact?
-}
-
-model Contact {
-  id          Int       @id @default(autoincrement())
-  phone       String
-  email       String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  customerId Int       @unique
-  customer    Customer  @relation(fields: [customerId], references: [id])
-}
-
-model Movie {
-  id            Int      @id @default(autoincrement())
-  title         String
-  runtimeMins   Int
-  screenings    Screening[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-}
-
-model Screening {
-  id        Int      @id @default(autoincrement())
-  startsAt  DateTime
-  movieId   Int
-  movie     Movie    @relation(fields: [movieId], references: [id])
-  screenId  Int
-  screen    Screen   @relation(fields: [screenId], references: [id])
-  tickets   Ticket[]
+  player    String
+  class     String
+  level     Int
+  background  String
+  race      String
+  alignment String
+  profBonus Int
+  stats     Stats?
+  savingThrows SavingThrows?
+  skills    Skills?
+  combat    Combat?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Screen {
-  id            Int         @id @default(autoincrement())
-  number        Int
-  screenings    Screening[]
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+model Stats {
+  id     Int    @id @default(autoincrement())
+  characterId Int @unique
+  character Character @relation(fields: [characterId], references: [id])
+  str     Int
+  dex     Int
+  con     Int
+  int     Int
+  wis     Int
+  cha     Int
 }
 
-model Ticket {
-  id            Int         @id @default(autoincrement())
-  customerId    Int
-  customer      Customer    @relation(fields: [customerId], references: [id])
-  screeningId   Int
-  screening     Screening   @relation(fields: [screeningId], references: [id])
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+model SavingThrows {
+  id     Int    @id @default(autoincrement())
+  characterId Int @unique
+  character Character @relation(fields: [characterId], references: [id])
+  str     Int
+  dex     Int
+  con     Int
+  int     Int
+  wis     Int
+  cha     Int
+}
+
+model Skills {
+  id     Int    @id @default(autoincrement())
+  characterId Int @unique
+  character Character @relation(fields: [characterId], references: [id])
+  acrobatics Int
+  animHand    Int
+  arcane      Int
+  athl        Int
+  decep       Int
+  hist        Int
+  insight     Int
+  intimid     Int
+  invest      Int
+  med         Int
+  nature      Int
+  percep      Int
+  perf        Int
+  pers        Int
+  religion    Int
+  sOfH        Int
+  stealth     Int
+  surv        Int
+}
+
+model Combat {
+  id     Int    @id @default(autoincrement())
+  characterId Int @unique
+  character Character @relation(fields: [characterId], references: [id])
+  hpMax   Int
+  ac      Int
+  speed   Int
+  hitDice String
 }
